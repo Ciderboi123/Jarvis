@@ -5,8 +5,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "start": "ts-node .",
-    "dev": "nodemon --exec \"ts-node .\" -e ts,yml,json --watch ./src/ --ignore ./dist/ -L",
-    "format": "prettier --init"
+    "dev": "nodemon --exec \"ts-node .\" -e ts,yml,json --watch ./src/ --ignore ./dist/ -L"
   },
   "author": "Cider_Gamer#5338",
   "license": "ISC",

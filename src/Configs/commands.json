@@ -77,6 +77,22 @@
           "Timestamp": "{timestamp}"
         }
       }
+    },
+    "Avatar": {
+      "Name": "avatar",
+      "Description": "Shows the avatar of the user",
+      "Category": "General",
+      "Reponse": {
+        "Embed": {
+          "Title": "Avatar of {user}",
+          "Image": "{avatar}",
+          "Footer": {
+            "Text": "{user-username}",
+            "IconUrl": "{user-pfp}"
+          },
+          "Timestamp": "{timestamp}"
+        }
+      }
     }
   }
 }
