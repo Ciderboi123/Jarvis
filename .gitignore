@@ -161,3 +161,5 @@ dist
 
 # Support for Project snippet scope
 !.vscode/*.code-snippets
+.vscode/settings.json
+config.json

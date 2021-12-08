@@ -1,0 +1,50 @@
+{
+  "name": "server-management-bot",
+  "version": "1.0.0",
+  "description": "An Advanced Server Management Bot For Discord written in Node.js Discord.js-v13",
+  "main": "./src/index.ts",
+  "scripts": {
+    "start": "ts-node .",
+    "dev": "nodemon --exec \"ts-node .\" -e ts,yml,json --watch ./src/ --ignore ./dist/ -L",
+    "format": "prettier --init"
+  },
+  "author": "Cider_Gamer#5338",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.9.0",
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.7.5",
+    "axios": "^0.24.0",
+    "better-sqlite3": "^7.4.5",
+    "canvacord": "^5.2.3",
+    "canvas": "^2.8.0",
+    "chalk": "^5.0.0",
+    "colors": "^1.4.0",
+    "consola": "^2.15.3",
+    "console-stamp": "^3.0.3",
+    "cron": "^1.8.2",
+    "date-differ": "^1.0.1",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "ffmpeg-static": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "glob": "^7.2.0",
+    "jszip": "^3.7.1",
+    "moment": "^2.29.1",
+    "mongoose": "^6.0.14",
+    "ms": "^2.1.3",
+    "network-scanner-js": "^1.1.5",
+    "node-fetch": "^3.1.0",
+    "request": "^2.88.2",
+    "tsc-node": "^0.0.3",
+    "typescript": "^4.5.2",
+    "yaml": "^1.10.2",
+    "ytdl-core": "^4.9.1"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0"
+  }
+}

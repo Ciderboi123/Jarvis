@@ -1,0 +1,82 @@
+{
+  "General": {
+    "Ping": {
+      "Name": "ping",
+      "Description": "Ping of the Bot.",
+      "Category": "General",
+      "Reponse": {
+        "Embed": {
+          "Title": "⏱️ Ping",
+          "Description": "Websocket Latency: `{ws-ping}` ms\nBot Latency: `{bot-ping}` ms",
+          "Footer": {
+            "Text": "{user-username}",
+            "IconUrl": "{user-pfp}"
+          },
+          "Timestamp": "{timestamp}"
+        }
+      }
+    },
+    "UserInfo": {
+      "Name": "userinfo",
+      "Description": "Shows the info of a user in the guild",
+      "Category": "General",
+      "Permission": [
+        "Developer"
+      ],
+      "Reponse": {
+        "Embed": {
+          "Title": "User information for {user}",
+          "Description": "This member is also known as {nickname} in this server.",
+          "Fields": [
+            {
+              "Name": "ID",
+              "Value": "{id}",
+              "Inline": false
+            },
+            {
+              "Name": "Discriminator",
+              "Value": "{tag}",
+              "Inline": true
+            },
+            {
+              "Name": "Bot?",
+              "Value": "{isBot}",
+              "Inline": true
+            },
+            {
+              "Name": "Admin?",
+              "Value": "{isAdmin}",
+              "Inline": true
+            },
+            {
+              "Name": "Created on",
+              "Value": "{acc-created}",
+              "Inline": true
+            },
+            {
+              "Name": "Joined on",
+              "Value": "{join-on}",
+              "Inline": true
+            },
+            {
+              "Name": "No of Roles",
+              "Value": "{role-count}",
+              "Inline": true
+            },
+            {
+              "Name": "Top Role",
+              "Value": "{role-top}",
+              "Inline": true
+            }
+          ],
+          "Footer": {
+            "Text": "{user-username}",
+            "IconUrl": "{user-pfp}"
+          },
+          "Thumbnail": "{user-smol-pfp}",
+          "Timestamp": "{timestamp}"
+        }
+      }
+    }
+  }
+}

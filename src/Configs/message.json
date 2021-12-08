@@ -1,0 +1,13 @@
+{
+  "Presets": {
+    "NoPermission": {
+      "Title": "⚠️ No Permission",
+      "Description": "You need to have to following roles to use this command: {roles}",
+      "Footer": {
+        "Text": "{user-username}",
+        "IconUrl": "{user-pfp}"
+      },
+      "Timestamp": "{timestamp}"
+    }
+  }
+}
