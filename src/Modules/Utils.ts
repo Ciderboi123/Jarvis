@@ -22,7 +22,7 @@ export function resolveUser(args: any, guild: Guild): GuildMember {
 	if (user) return user;
 }
 
-interface EmbedOptions {
+export interface EmbedOptions {
 	Title?: string;
 	Description?: string;
 	Footer?: {
@@ -40,7 +40,7 @@ interface EmbedOptions {
 	Fields?: { Name: any; Value: any; Inline: any }[];
 }
 
-interface CreateEmbedOption {
+export interface CreateEmbedOption {
 	options: EmbedOptions;
 	variables?: {
 		searchFor: RegExp | string;
@@ -158,16 +158,16 @@ export async function createEmbed(_options: CreateEmbedOption, member: GuildMemb
 	return embed;
 }
 
-interface ButtonOptions {
+export interface ButtonOptions {
 	Text: string
 	Emoji?: string
 	CustomID: string
-	Link?: string,
+	Link?: string
 	Color: 'blurple' | 'grey' | 'green' | 'red' | 'url' | 'primary' | 'secondary' | 'success' | 'danger' | 'link' | string,
 	isEnabled: boolean
 }
 
-export function calculateButton(options: ButtonOptions) {
+export function calculateButton(options: ButtonOptions, variables?: { searchFor: RegExp | string, replaceWith: any }[]) {
 	let Text = options.Text;
 	let Emoji = options.Emoji ? options.Emoji : null;
 	let CustomID = options.CustomID ? options.CustomID : null;
@@ -208,6 +208,15 @@ export function calculateButton(options: ButtonOptions) {
 	if (!CustomID) {
 		client.logger.error('Variable \`CustomID\` was not passed in Button');
 		return;
+	}
+
+	if (variables) {
+		for (let variable of variables) {
+			if (Text) Text = Text.replace(variable.searchFor, variable.replaceWith);
+			if (Emoji) Emoji = Emoji.replace(variable.searchFor, variable.replaceWith);
+			if (CustomID) CustomID = CustomID.replace(variable.searchFor, variable.replaceWith);
+			if (Link) Link = Link.replace(variable.searchFor, variable.replaceWith);
+		}
 	}
 
 	let button = new MessageButton()

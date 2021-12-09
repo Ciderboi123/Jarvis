@@ -94,5 +94,44 @@
         }
       }
     }
+  },
+  "Tickets": {
+    "New": {
+      "Name": "new",
+      "Description": "Creates a new ticket",
+      "Category": "Tickets",
+      "Response": {
+        "Embed": {
+          "TicketCreatedMessage": {
+            "Title": "📃 Ticket Create",
+            "Description": "Your ticket can be seen in {channel}",
+            "Footer": {
+              "Text": "{user-username}",
+              "IconUrl": "{user-pfp}"
+            },
+            "Timestamp": "{timestamp}"
+          },
+          "NewTicketMessage": {
+            "Title": "Ticket of {user-username}",
+            "Description": "Please describe your issue below.",
+            "Footer": {
+              "Text": "{user-username}",
+              "IconUrl": "{user-pfp}"
+            },
+            "Timestamp":"{timestamp}"
+          }
+        },
+        "Buttons": {
+          "ChannelButton": {
+            "Text": "To The Ticket",
+            "Emoji": "🎫",
+            "CustomID": "create",
+            "Color": "url",
+            "isEnabled": true,
+            "Link": "https://discord.com/channels/{guildID}/{channelID}"
+          }
+        }
+      }
+    }
   }
 }
