@@ -4,9 +4,12 @@ import consola, { Consola, FancyReporter, BasicReporter, WinstonReporter } from 
 import { promisify } from 'util';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
+import { Collection, Db, MongoClient }  from 'mongodb';
 
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
+import { Ticket } from './Schema/TicketSchema';
+import { Colors as colors } from './Modules/Utils';
 
 import Config from './Configs/config.json'
 
@@ -24,8 +27,33 @@ class Bot extends Discord.Client {
   public commands: Discord.Collection<string, Command> = new Discord.Collection();
   public events: Discord.Collection<string, Event> = new Discord.Collection();
   public config: typeof Config = Config;
+  
+  public database: Db;
+  public databaseCollection: Collection;
+  public databaseClient: MongoClient;
 
   private slashCmdData: any[] = [];
+  private ticketStruct: Ticket = {
+    guild: 'ignore',
+    channel: 'ignore',
+    message: 'ignore',
+    author: 'ignore',
+    closeTime: 'ignore',
+    reason: 'ignore',
+    closeAuthor: 'ignore'
+  };
+
+  public async connectMongoose() {
+    // this.logger.info('Connecting to Mongodb...')
+    if (this.database) return;
+    this.databaseClient = new MongoClient(this.config.Settings.MongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+    this.databaseClient.connect();
+    this.database = this.databaseClient.db('Service-Bot');
+    this.databaseCollection = this.database.collection('Tickets');
+    await this.databaseCollection.insertOne(this.ticketStruct);
+    await this.databaseCollection.deleteOne(this.ticketStruct);
+    this.logger.info(`Connected to ${colors.FgGreen + 'MongoDB' + colors.Reset}`);
+  }
 
   public async start() {
     const CommandFiles: string[] = await globPromise(`${__dirname}/Commands/**/*{.ts,.js}`);
@@ -47,6 +75,7 @@ class Bot extends Discord.Client {
     })
 
     this.login(this.config.Settings.Token);
+    await this.connectMongoose();
   }
 
   public async registerSlashCommand(): Promise<void> {

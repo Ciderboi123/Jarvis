@@ -2,6 +2,14 @@
   "Settings": {
     "Token": "You bot's token",
     "GuildID": "",
-    "Timezone": ""
+    "Timezone": "",
+    "MongoDb": ""
+  },
+  "Modules": {
+    "Suggestions": {},
+    "Tickets": {
+      "TicketCategory": "",
+      "TicketName": "" 
+    }
   }
 }

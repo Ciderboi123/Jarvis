@@ -6,13 +6,11 @@ import { Colors as colors } from '../Modules/Utils';
 export const run: RunFunction = async (client) => {
 	const { logger } = client;
 	logger.info(
-		`Commands: Loaded ${
-			colors.FgBlue + client.commands.size.toString() + colors.Reset
+		`Commands: Loaded ${colors.FgBlue + client.commands.size.toString() + colors.Reset
 		} Commands`
 	);
 	logger.info(
-		`Events:   Loaded ${
-			colors.FgBlue + client.events.size.toString() + colors.Reset
+		`Events:   Loaded ${colors.FgBlue + client.events.size.toString() + colors.Reset
 		} Events`
 	);
 
