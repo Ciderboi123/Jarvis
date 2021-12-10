@@ -38,9 +38,6 @@ class Bot extends Discord.Client {
     channel: 'ignore',
     message: 'ignore',
     author: 'ignore',
-    closeTime: 'ignore',
-    reason: 'ignore',
-    closeAuthor: 'ignore'
   };
 
   public async connectMongoose() {
