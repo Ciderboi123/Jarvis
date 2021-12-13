@@ -8,7 +8,7 @@ import { Collection, Db, MongoClient }  from 'mongodb';
 
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
-import { Ticket } from './Schema/TicketSchema';
+import { Ticket } from './Interfaces/Ticket';
 import { Colors as colors } from './Modules/Utils';
 
 import Config from './Configs/config.json'
@@ -36,8 +36,10 @@ class Bot extends Discord.Client {
   private ticketStruct: Ticket = {
     guild: 'ignore',
     channel: 'ignore',
-    message: 'ignore',
     author: 'ignore',
+    closingReason: 'ignore',
+    closeAt: 'ignore',
+    closeBy: 'ignore'
   };
 
   public async connectMongoose() {

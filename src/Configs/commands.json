@@ -21,7 +21,8 @@
       "Description": "Shows the info of a user in the guild",
       "Category": "General",
       "Permission": [
-        "Developer"
+        "Cider",
+        "Lab Guys"
       ],
       "Reponse": {
         "Embed": {
@@ -118,7 +119,7 @@
               "Text": "{user-username}",
               "IconUrl": "{user-pfp}"
             },
-            "Timestamp":"{timestamp}"
+            "Timestamp": "{timestamp}"
           }
         },
         "Buttons": {
@@ -131,6 +132,25 @@
             "Link": "https://discord.com/channels/{guildID}/{channelID}"
           }
         }
+      }
+    },
+    "Close": {
+      "Name": "close",
+      "Description": "Close the ticket",
+      "Category": "Tickets",
+      "Response": {
+        "Embed": {
+          "CloseTicketMessage": {
+            "Title": "Ticket Closed by {user}",
+            "Description": "Reason: {reason}",
+            "Footer": {
+              "Text": "{user-username}",
+              "IconUrl": "{user-pfp}"
+            },
+            "Timestamp": "{timestamp}"
+          }
+        },
+        "Buttons": {}
       }
     }
   }
