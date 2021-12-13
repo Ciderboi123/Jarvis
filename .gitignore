@@ -163,3 +163,4 @@ dist
 !.vscode/*.code-snippets
 .vscode/settings.json
 config.json
+personal
