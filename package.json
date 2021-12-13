@@ -1,6 +1,6 @@
 {
   "name": "server-management-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An Advanced Server Management Bot For Discord written in Node.js Discord.js-v13",
   "main": "./src/index.ts",
   "scripts": {
