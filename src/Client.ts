@@ -9,6 +9,7 @@ import { Collection, Db, MongoClient }  from 'mongodb';
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
 import { Ticket } from './Interfaces/Ticket';
+
 import { Colors as colors } from './Modules/Utils';
 
 import Config from './Configs/config.json'
@@ -29,7 +30,7 @@ class Bot extends Discord.Client {
   public config: typeof Config = Config;
   
   public database: Db;
-  public databaseCollection: Collection;
+  public databaseCollectionTicket: Collection;
   public databaseClient: MongoClient;
 
   private slashCmdData: any[] = [];
@@ -48,9 +49,12 @@ class Bot extends Discord.Client {
     this.databaseClient = new MongoClient(this.config.Settings.MongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
     this.databaseClient.connect();
     this.database = this.databaseClient.db('Service-Bot');
-    this.databaseCollection = this.database.collection('Tickets');
-    await this.databaseCollection.insertOne(this.ticketStruct);
-    await this.databaseCollection.deleteOne(this.ticketStruct);
+    
+    // Tickets
+    this.databaseCollectionTicket = this.database.collection('Tickets');
+    await this.databaseCollectionTicket.insertOne(this.ticketStruct);
+    await this.databaseCollectionTicket.deleteOne(this.ticketStruct);
+
     this.logger.info(`Connected to ${colors.FgGreen + 'MongoDB' + colors.Reset}`);
   }
 

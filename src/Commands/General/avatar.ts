@@ -17,7 +17,7 @@ export const runSlash: RunSlashFunction = async (client, interaction) => {
   await interaction.reply({
     embeds: [
       await createEmbed({
-        options: Commands.General.Avatar.Reponse.Embed,
+        options: Commands.General.Avatar.Response.Embed,
         variables: [
           { searchFor: /{timestamp}/g, replaceWith: new Date() },
           { searchFor: /{avatar}/g, replaceWith: interaction.options.getUser('user').avatarURL({ dynamic: true }) }, 

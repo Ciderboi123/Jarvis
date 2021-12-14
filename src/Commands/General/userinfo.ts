@@ -23,7 +23,7 @@ export const runSlash: RunSlashFunction = async (client, interaction) => {
   await interaction.reply({
     embeds: [
       await createEmbed({
-        options: Commands.General.UserInfo.Reponse.Embed,
+        options: Commands.General.UserInfo.Response.Embed,
         variables: [
           { searchFor: /{user}/g, replaceWith: user.username },
           { searchFor: /{nickname}/g, replaceWith: member.nickname ? member.nickname : user.username},

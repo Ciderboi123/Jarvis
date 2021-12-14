@@ -16,7 +16,7 @@ export const runSlash: RunSlashFunction = async (client, interaction) => {
   await interaction.reply({
     embeds: [
       await createEmbed({
-        options: Commands.General.Ping.Reponse.Embed,
+        options: Commands.General.Ping.Response.Embed,
         variables: [
           { searchFor: /{timestamp}/g, replaceWith: new Date() },
           { searchFor: /{ws-ping}/g, replaceWith: client.ws.ping },
