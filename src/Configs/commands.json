@@ -4,7 +4,7 @@
       "Name": "ping",
       "Description": "Ping of the Bot.",
       "Category": "General",
-      "Reponse": {
+      "Response": {
         "Embed": {
           "Title": "⏱️ Ping",
           "Description": "Websocket Latency: `{ws-ping}` ms\nBot Latency: `{bot-ping}` ms",
@@ -24,7 +24,7 @@
         "Cider",
         "Lab Guys"
       ],
-      "Reponse": {
+      "Response": {
         "Embed": {
           "Title": "User information for {user}",
           "Description": "This member is also known as {nickname} in this server.",
@@ -83,7 +83,7 @@
       "Name": "avatar",
       "Description": "Shows the avatar of the user",
       "Category": "General",
-      "Reponse": {
+      "Response": {
         "Embed": {
           "Title": "Avatar of {user}",
           "Image": "{avatar}",
@@ -151,6 +151,58 @@
           }
         },
         "Buttons": {}
+      }
+    }
+  },
+  "Suggestion": {
+    "Suggest": {
+      "Name": "suggest",
+      "Description": "Suggestion related to certain topic :p",
+      "Category": "Suggestion",
+      "Response": {
+        "Embed": {
+          "SuggestionNew": {
+            "Title": "Suggestion Sent ✅"
+          },
+          "SuggestionSent": {
+            "Title": "Idea 💬",
+            "Description": "{idea}\nFrom: {user}",
+            "Footer": {
+              "Text": "ID: {id}"
+            }
+          }
+        },
+        "Button": {
+          "GoToSuggestion": {
+            "Text": "To Suggestion",
+            "Emoji": "🖇️",
+            "CustomID": "suggestion-to-suggestion",
+            "Color": "url",
+            "Link": "https://discord.com/channels/{guildID}/{channelID}/{messageID}",
+            "isEnabled": true
+          },
+          "Accept": {
+            "Text": "Accept",
+            "Emoji": "✔️",
+            "CustomID": "suggestion-accept",
+            "Color": "green",
+            "isEnabled": true
+          },
+          "Decline": {
+            "Text": "Decline",
+            "Emoji": "❌",
+            "CustomID": "suggestion-decline",
+            "Color": "red",
+            "isEnabled": true
+          },
+          "Delete": {
+            "Text": "Delete",
+            "Emoji": "⚠️",
+            "CustomID": "suggestion-delete",
+            "Color": "red",
+            "isEnabled": true
+          }
+        }
       }
     }
   }

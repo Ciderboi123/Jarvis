@@ -1,6 +1,8 @@
+import { CommandInteraction, GuildMember, ButtonInteraction } from 'discord.js';
+
 import { RunFunction } from '../Interfaces/Event';
-import { CommandInteraction, GuildMember } from 'discord.js';
 import { hasRole, findRole, createEmbed, parseVariables } from '../Modules/Utils'
+import { acceptSuggesetion, declineSuggesetion, deleteSuggesetion } from '../Modules/Suggestion';
 
 import { Presets } from '../Configs/message.json';
 
@@ -52,5 +54,14 @@ export const run: RunFunction = async (bot, interaction: CommandInteraction) => 
 				}, member)
 			]
 		})
+	} if (interaction.isButton()) {
+		await interaction.deferReply({ephemeral:true});
+		if (interaction.customId == 'suggestion-accept') {
+			await acceptSuggesetion(bot, interaction);
+		} else if (interaction.customId == 'suggestion-decline') {
+			await declineSuggesetion(bot, interaction);
+		} else if (interaction.customId == 'suggestion-delete') {
+			await deleteSuggesetion(bot, interaction);
+		}
 	}
 };

@@ -34,7 +34,7 @@ export async function createTicket(client: typeof Bot, interaction: CommandInter
   });
   await msg.delete();
 
-  await client.databaseCollection.insertOne({
+  await client.databaseCollectionTicket.insertOne({
     guild: interaction.guild.id,
     author: interaction.user.id,
     channel: channel.id,
@@ -58,13 +58,13 @@ export async function createTicket(client: typeof Bot, interaction: CommandInter
 }
 
 export async function closeTicket(client: typeof Bot, interaction: CommandInteraction) {
-  const ticket: Ticket = await client.databaseCollection.findOne({ channel: interaction.channel.id })
+  const ticket: Ticket = await client.databaseCollectionTicket.findOne({ channel: interaction.channel.id })
   if (!ticket) return await interaction.reply({ content: 'ticket was not found in database', ephemeral: true });
   const channel: TextChannel = client.channels.cache.get(ticket.channel) as TextChannel
   const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'not given'
 
   await channel.delete();
-  await client.databaseCollection.updateOne(ticket, {
+  await client.databaseCollectionTicket.updateOne(ticket, {
     $set: {
       closingReason: reason,
       closeAt: new Date().toISOString(),

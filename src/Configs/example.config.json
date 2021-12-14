@@ -6,7 +6,11 @@
     "MongoDb": ""
   },
   "Modules": {
-    "Suggestions": {},
+    "Suggestions": {
+      "SuggestionChannel": "",
+      "SuggestionAccept": "",
+      "SuggestionDecline": ""
+    },
     "Tickets": {
       "TicketCategory": "",
       "TicketName": "" 
