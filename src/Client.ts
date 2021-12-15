@@ -9,6 +9,7 @@ import { Collection, Db, MongoClient }  from 'mongodb';
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
 import { Ticket } from './Interfaces/Ticket';
+import { Account } from './Interfaces/Account'
 
 import { Colors as colors } from './Modules/Utils';
 
@@ -31,6 +32,7 @@ class Bot extends Discord.Client {
   
   public database: Db;
   public databaseCollectionTicket: Collection;
+  public databaseCollectionEconomy: Collection;
   public databaseClient: MongoClient;
 
   private slashCmdData: any[] = [];
@@ -43,6 +45,14 @@ class Bot extends Discord.Client {
     closeBy: 'ignore'
   };
 
+  private economyStruct: Account = {
+    user: 'ignore',
+    balance: {
+      wallet: 'ignore',
+      bank: 'ignore'
+    }
+  }
+
   public async connectMongoose() {
     // this.logger.info('Connecting to Mongodb...')
     if (this.database) return;
@@ -54,6 +64,11 @@ class Bot extends Discord.Client {
     this.databaseCollectionTicket = this.database.collection('Tickets');
     await this.databaseCollectionTicket.insertOne(this.ticketStruct);
     await this.databaseCollectionTicket.deleteOne(this.ticketStruct);
+
+    // Economy
+    this.databaseCollectionEconomy = this.database.collection('Economy');
+    await this.databaseCollectionEconomy.insertOne(this.economyStruct);
+    await this.databaseCollectionEconomy.deleteOne(this.economyStruct);
 
     this.logger.info(`Connected to ${colors.FgGreen + 'MongoDB' + colors.Reset}`);
   }
