@@ -14,8 +14,6 @@ export const slashData = new SlashCommandBuilder()
   .setDescription(description)
   .addUserOption(o => o.setName('user').setDescription('The user you are looking for').setRequired(true))
 
-export const permission = Commands.General.UserInfo.Permission
-
 export const runSlash: RunSlashFunction = async (client, interaction) => {
   const member: GuildMember = interaction.options.getMember('user') as GuildMember ? interaction.options.getMember('user') as GuildMember : interaction.member as GuildMember;
   const user: User = interaction.options.getUser('user') as User ? interaction.options.getUser('user') as User : interaction.user as User;

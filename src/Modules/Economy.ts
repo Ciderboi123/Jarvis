@@ -23,3 +23,43 @@ export async function createAccount(user: GuildMember): Promise<Account> {
 
   return account
 }
+
+export async function giveBalance(fromUser: GuildMember, toUser: GuildMember, amount: number, interaction: CommandInteraction) {
+  let fromUserAccount = await createAccount(fromUser);
+  let toUserAccount = await createAccount(toUser);
+  if (amount < 1)
+    return await interaction.reply({
+      embeds: [
+        await createEmbed({
+          options: {
+            Title: '❌ Cannot give money lower than `1`.'
+          }
+        }, interaction.member as GuildMember)
+      ]
+    })
+  await client.databaseCollectionEconomy.updateOne(fromUserAccount, {
+    $set: {
+      user: (await fromUserAccount).user,
+      balance: {
+        wallet: parseInt((await fromUserAccount).balance.wallet) - amount,
+        bank: (await fromUserAccount).balance.bank
+      }
+    }
+  })
+  await client.databaseCollectionEconomy.updateOne(toUserAccount, {
+    $set: {
+      user: (await toUserAccount).user,
+      balance: {
+        wallet: parseInt((await toUserAccount).balance.wallet) + amount,
+        bank: (await toUserAccount).balance.bank
+      }
+    }
+  })
+  return await interaction.reply({
+    embeds: [
+      await createEmbed({
+        options: { Title: `✔️ Given ${amount} to ${toUser.user.username}` }
+      }, interaction.member as GuildMember)
+    ]
+  })
+}

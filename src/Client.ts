@@ -4,12 +4,13 @@ import consola, { Consola, FancyReporter, BasicReporter, WinstonReporter } from 
 import { promisify } from 'util';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import { Collection, Db, MongoClient }  from 'mongodb';
+import { Collection, Db, MongoClient } from 'mongodb';
 
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
 import { Ticket } from './Interfaces/Ticket';
 import { Account } from './Interfaces/Account'
+import { GuildConfig } from './Interfaces/GuildConfig'
 
 import { Colors as colors } from './Modules/Utils';
 
@@ -29,9 +30,11 @@ class Bot extends Discord.Client {
   public commands: Discord.Collection<string, Command> = new Discord.Collection();
   public events: Discord.Collection<string, Event> = new Discord.Collection();
   public config: typeof Config = Config;
-  
+
+  private _rest: REST;
+
   public database: Db;
-  public databaseCollectionTicket: Collection;
+  public databaseCollectionGuild: Collection;
   public databaseCollectionEconomy: Collection;
   public databaseClient: MongoClient;
 
@@ -53,17 +56,26 @@ class Bot extends Discord.Client {
     }
   }
 
+  private guildStuct: GuildConfig = {
+    Id: 'ignore',
+    Name: 'ignore',
+    MemberCount: 'any',
+    Config: {
+      ignore: 'ignore'
+    }
+  };
+
   public async connectMongoose() {
     // this.logger.info('Connecting to Mongodb...')
     if (this.database) return;
     this.databaseClient = new MongoClient(this.config.Settings.MongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
     this.databaseClient.connect();
     this.database = this.databaseClient.db('Service-Bot');
-    
-    // Tickets
-    this.databaseCollectionTicket = this.database.collection('Tickets');
-    await this.databaseCollectionTicket.insertOne(this.ticketStruct);
-    await this.databaseCollectionTicket.deleteOne(this.ticketStruct);
+
+    // Guild
+    this.databaseCollectionGuild = this.database.collection('Guild');
+    await this.databaseCollectionGuild.insertOne(this.guildStuct);
+    await this.databaseCollectionGuild.deleteOne(this.guildStuct);
 
     // Economy
     this.databaseCollectionEconomy = this.database.collection('Economy');
@@ -74,6 +86,8 @@ class Bot extends Discord.Client {
   }
 
   public async start() {
+    this._rest = new REST({ version: '9' }).setToken(this.config.Settings.Token);
+
     const CommandFiles: string[] = await globPromise(`${__dirname}/Commands/**/*{.ts,.js}`);
     CommandFiles.map(async (value: string) => {
       const file: Command = await import(value);
@@ -96,17 +110,59 @@ class Bot extends Discord.Client {
     await this.connectMongoose();
   }
 
-  public async registerSlashCommand(): Promise<void> {
-    if (!this.slashCmdData) return;
-    const rest = new REST({ version: '9' }).setToken(this.config.Settings.Token)
+  public async registerSlashCommandGuild(guild: Discord.Guild): Promise<void> {
     try {
-      rest.put(Routes.applicationGuildCommands(this.user.id, this.config.Settings.GuildID), {
+      this._rest.put(Routes.applicationGuildCommands(this.user.id, guild.id), {
         body: this.slashCmdData
       });
+      this.logger.info(`Registering Slash commands in ${guild.name}`)
     } catch (error) {
       this.logger.error(error.message)
     }
+
+    await this.createPerServerConfig();
+  }
+
+  public async registerSlashCommand(): Promise<void> {
+    // if (!this.slashCmdData) return;
+    try {
+      for (let guilds of this.guilds.cache) {
+        const guild = guilds[1]
+        this._rest.put(Routes.applicationGuildCommands(this.user.id, guild.id), {
+          body: this.slashCmdData
+        });
+        this.logger.info(`${'[' + colors.FgCyan + 'Slash Cmd' + colors.Reset + ']'} Registering Slash commands in ${guild.name}`)
+      }
+    } catch (error) {
+      this.logger.error(error.message)
+    }
+
+    await this.createPerServerConfig();
+  }
+
+  private async createPerServerConfig() {
+
+
+
+    for (let guilds of this.guilds.cache) {
+      const guild = guilds[1]
+      let _ = await this.databaseCollectionGuild.findOne({
+        Id: guild.id,
+        Name: guild.name,
+        MemberCount: guild.memberCount.toString(),
+        Config: 'MAKE CONFIG'
+      } as GuildConfig)
+  
+      this.logger.info(`${'[' + colors.FgGreen + 'Config' + colors.Reset + ']'} Adding ${guild.name} to database`)
+      await this.databaseCollectionGuild.insertOne({
+        Id: guild.id,
+        Name: guild.name,
+        MemberCount: guild.memberCount.toString(),
+        Config: 'MAKE CONFIG'
+      } as GuildConfig)
+    }
   }
 }
+
 
 export { Bot };

@@ -2,7 +2,6 @@ import { CommandInteraction, GuildMember, ButtonInteraction } from 'discord.js';
 
 import { RunFunction } from '../Interfaces/Event';
 import { hasRole, findRole, createEmbed, parseVariables } from '../Modules/Utils'
-import { acceptSuggesetion, declineSuggesetion, deleteSuggesetion } from '../Modules/Suggestion';
 
 import { Presets } from '../Configs/message.json';
 
@@ -16,12 +15,12 @@ export const run: RunFunction = async (bot, interaction: CommandInteraction) => 
 			(x) => x.name.toLowerCase() == interaction.commandName.toLowerCase()
 		);
 		if (!command) {
-			let cmd = bot.guilds.cache
-				.get(bot.config.Settings.GuildID)
-				.commands.cache.find(
-					(x) => x.name.toLowerCase() == interaction.commandName.toLowerCase()
-				);
-			if (cmd) cmd.delete();
+			for (let cmds of bot.guilds.cache) {
+				let cmd = cmds[1]
+				cmd.commands.cache.find(x => x.name.toLowerCase() == interaction.commandName)
+				if (cmd) cmd.delete()
+			}
+
 			return interaction.reply({
 				content: 'This command no longer exists.',
 				ephemeral: true,
@@ -54,14 +53,5 @@ export const run: RunFunction = async (bot, interaction: CommandInteraction) => 
 				}, member)
 			]
 		})
-	} if (interaction.isButton()) {
-		await interaction.deferReply({ephemeral:true});
-		if (interaction.customId == 'suggestion-accept') {
-			await acceptSuggesetion(bot, interaction);
-		} else if (interaction.customId == 'suggestion-decline') {
-			await declineSuggesetion(bot, interaction);
-		} else if (interaction.customId == 'suggestion-delete') {
-			await deleteSuggesetion(bot, interaction);
-		}
 	}
 };

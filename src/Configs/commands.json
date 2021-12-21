@@ -20,10 +20,6 @@
       "Name": "userinfo",
       "Description": "Shows the info of a user in the guild",
       "Category": "General",
-      "Permission": [
-        "Cider",
-        "Lab Guys"
-      ],
       "Response": {
         "Embed": {
           "Title": "User information for {user}",
@@ -224,6 +220,12 @@
           }
         }
       }
+    },
+    "Give": {
+      "Name": "give",
+      "Description": "Give some amount to other user",
+      "Category": "Economy",
+      "Response": {}
     }
   }
 }
