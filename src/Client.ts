@@ -104,7 +104,7 @@ class Bot extends Discord.Client {
   }
 
   private async createOneServerConfig(guild: Discord.Guild): Promise<void> {
-    if (this.databaseCollectionGuild.find({ Id: guild.id })) return // this.logger.info(`${'[' + colors.FgGreen + 'Config' + colors.Reset + ']'} Already ${guild.name} exists in database`);
+    // if (this.databaseCollectionGuild.find({ Id: guild.id })) return this.logger.info(`${'[' + colors.FgGreen + 'Config' + colors.Reset + ']'} Already ${guild.name} exists in database`);
     let _ = await this.databaseCollectionGuild.findOne({
       Id: guild.id,
       Name: guild.name,
@@ -113,7 +113,7 @@ class Bot extends Discord.Client {
         'config': 'MAKE CONFIG'
       }
     } as GuildConfig)
-
+    if (_) return;
     await this.databaseCollectionGuild.insertOne({
       Id: guild.id,
       Name: guild.name,

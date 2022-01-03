@@ -1,6 +1,6 @@
 {
-  "name": "server-management-bot",
-  "version": "1.0.1",
+  "name": "jarvis",
+  "version": "1.0.2",
   "description": "An Advanced Server Management Bot For Discord written in Node.js Discord.js-v13",
   "main": "./src/index.ts",
   "scripts": {
@@ -54,6 +54,7 @@
     "ytdl-core": "^4.9.1"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0"
+    "@types/glob": "^7.2.0",
+    "@types/request": "^2.48.8"
   }
 }

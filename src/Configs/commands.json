@@ -225,5 +225,22 @@
       "Category": "Economy",
       "Response": {}
     }
+  },
+  "Games": {
+    "Activities": {
+      "Name": "activity",
+      "Description": "You games in voice channel",
+      "Category": "Games",
+      "Response": {
+        "ActivityJoinEmbed": {
+          "Description": "click [here]({url}) to join the activity",
+          "Footer": {
+            "Text": "{user-username}",
+            "IconUrl": "{user-pfp}"
+          },
+          "Timestamp": "{timestamp}"
+        }
+      }
+    }
   }
 }

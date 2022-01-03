@@ -1,3 +1,5 @@
+import { MongoError } from 'mongodb';
+
 import { Guild } from 'discord.js';
 import { client } from '../index'
 
@@ -39,7 +41,10 @@ export async function insertConfig(guild: Guild): Promise<boolean> {
 }
 
 export async function create() {
+  //if (client.database.listCollections({ name: 'Guild' }).next(async (_err, collinfo) => { if (collinfo) return false; }) != null) return;
+  let dbs = await client.database.listCollections().toArray();
+  if (!dbs.map(c => c.name == 'Guild')) await client.database.createCollection('Guild').catch((err) => { if (err) return; });
   client.databaseCollectionGuild = client.database.collection('Guild');
-  await client.databaseCollectionGuild.insertOne(struct);
-  await client.databaseCollectionGuild.deleteOne(struct);
+  // await client.databaseCollectionGuild.insertOne(struct);
+  // await client.databaseCollectionGuild.deleteOne(struct);
 }
