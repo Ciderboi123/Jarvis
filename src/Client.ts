@@ -8,9 +8,8 @@ import { Collection, Db, MongoClient } from 'mongodb';
 
 import { Command } from './Interfaces/Commands'
 import { Event } from './Interfaces/Event'
-import { Ticket } from './Interfaces/Ticket';
-import { Account } from './Interfaces/Account'
-import { GuildConfig } from './Interfaces/GuildConfig'
+import { Account, create  as accountCreate, updateAccount } from './Interfaces/Account'
+import { GuildConfig, create as guildCreate } from './Interfaces/GuildConfig'
 
 import { Colors as colors } from './Modules/Utils';
 
@@ -39,31 +38,6 @@ class Bot extends Discord.Client {
   public databaseClient: MongoClient;
 
   private slashCmdData: any[] = [];
-  private ticketStruct: Ticket = {
-    guild: 'ignore',
-    channel: 'ignore',
-    author: 'ignore',
-    closingReason: 'ignore',
-    closeAt: 'ignore',
-    closeBy: 'ignore'
-  };
-
-  private economyStruct: Account = {
-    user: 'ignore',
-    balance: {
-      wallet: 'ignore',
-      bank: 'ignore'
-    }
-  }
-
-  private guildStuct: GuildConfig = {
-    Id: 'ignore',
-    Name: 'ignore',
-    MemberCount: 'any',
-    Config: {
-      ignore: 'ignore'
-    }
-  };
 
   public async connectMongoose() {
     // this.logger.info('Connecting to Mongodb...')
@@ -72,15 +46,8 @@ class Bot extends Discord.Client {
     this.databaseClient.connect();
     this.database = this.databaseClient.db('Service-Bot');
 
-    // Guild
-    this.databaseCollectionGuild = this.database.collection('Guild');
-    await this.databaseCollectionGuild.insertOne(this.guildStuct);
-    await this.databaseCollectionGuild.deleteOne(this.guildStuct);
-
-    // Economy
-    this.databaseCollectionEconomy = this.database.collection('Economy');
-    await this.databaseCollectionEconomy.insertOne(this.economyStruct);
-    await this.databaseCollectionEconomy.deleteOne(this.economyStruct);
+    await guildCreate();
+    await accountCreate();
 
     this.logger.info(`Connected to ${colors.FgGreen + 'MongoDB' + colors.Reset}`);
   }
@@ -115,52 +82,42 @@ class Bot extends Discord.Client {
       this._rest.put(Routes.applicationGuildCommands(this.user.id, guild.id), {
         body: this.slashCmdData
       });
-      this.logger.info(`Registering Slash commands in ${guild.name}`)
     } catch (error) {
       this.logger.error(error.message)
     }
 
-    await this.createPerServerConfig();
+    await this.createOneServerConfig(guild)
   }
 
   public async registerSlashCommand(): Promise<void> {
-    // if (!this.slashCmdData) return;
     try {
       for (let guilds of this.guilds.cache) {
         const guild = guilds[1]
         this._rest.put(Routes.applicationGuildCommands(this.user.id, guild.id), {
           body: this.slashCmdData
         });
-        this.logger.info(`${'[' + colors.FgCyan + 'Slash Cmd' + colors.Reset + ']'} Registering Slash commands in ${guild.name}`)
+        await this.createOneServerConfig(guild);
       }
     } catch (error) {
       this.logger.error(error.message)
     }
-
-    await this.createPerServerConfig();
   }
 
-  private async createPerServerConfig() {
+  private async createOneServerConfig(guild: Discord.Guild): Promise<void> {
+    if (this.databaseCollectionGuild.find({ Id: guild.id })) return // this.logger.info(`${'[' + colors.FgGreen + 'Config' + colors.Reset + ']'} Already ${guild.name} exists in database`);
+    let _ = await this.databaseCollectionGuild.findOne({
+      Id: guild.id,
+      Name: guild.name,
+      MemberCount: guild.memberCount.toString(),
+      Config: 'MAKE CONFIG'
+    } as GuildConfig)
 
-
-
-    for (let guilds of this.guilds.cache) {
-      const guild = guilds[1]
-      let _ = await this.databaseCollectionGuild.findOne({
-        Id: guild.id,
-        Name: guild.name,
-        MemberCount: guild.memberCount.toString(),
-        Config: 'MAKE CONFIG'
-      } as GuildConfig)
-  
-      this.logger.info(`${'[' + colors.FgGreen + 'Config' + colors.Reset + ']'} Adding ${guild.name} to database`)
-      await this.databaseCollectionGuild.insertOne({
-        Id: guild.id,
-        Name: guild.name,
-        MemberCount: guild.memberCount.toString(),
-        Config: 'MAKE CONFIG'
-      } as GuildConfig)
-    }
+    await this.databaseCollectionGuild.insertOne({
+      Id: guild.id,
+      Name: guild.name,
+      MemberCount: guild.memberCount.toString(),
+      Config: 'MAKE CONFIG'
+    } as GuildConfig)
   }
 }
 

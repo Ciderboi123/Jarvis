@@ -209,15 +209,13 @@
       "Category": "Economy",
       "Response": {
         "Embed": {
-          "Balance": {
-            "Title": "Balance",
-            "Description": "Wallet: \\💵{wallet}\nBank: \\💵{bank}",
-            "Footer": {
-              "Text": "{user-username}",
-              "IconUrl": "{user-pfp}"
-            },
-            "Timestamp": "{timestamp}"
-          }
+          "Title": "Balance",
+          "Description": "Wallet: \\💵{wallet}\nBank: \\💵{bank}",
+          "Footer": {
+            "Text": "{user-username}",
+            "IconUrl": "{user-pfp}"
+          },
+          "Timestamp": "{timestamp}"
         }
       }
     },

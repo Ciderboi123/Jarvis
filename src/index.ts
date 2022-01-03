@@ -3,7 +3,6 @@ import { Colors as colors } from './Modules/Utils'
 
 import packageJSON from '../package.json'
 
-
 export const client = new Bot();
 client.logger.info('#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#');
 client.logger.info('');
