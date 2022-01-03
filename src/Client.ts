@@ -109,14 +109,18 @@ class Bot extends Discord.Client {
       Id: guild.id,
       Name: guild.name,
       MemberCount: guild.memberCount.toString(),
-      Config: 'MAKE CONFIG'
+      Config: {
+        'config': 'MAKE CONFIG'
+      }
     } as GuildConfig)
 
     await this.databaseCollectionGuild.insertOne({
       Id: guild.id,
       Name: guild.name,
       MemberCount: guild.memberCount.toString(),
-      Config: 'MAKE CONFIG'
+      Config: {
+        'config': 'MAKE CONFIG'
+      }
     } as GuildConfig)
   }
 }

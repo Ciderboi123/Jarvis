@@ -2,19 +2,14 @@ import { Guild } from 'discord.js';
 import { client } from '../index'
 
 export interface Config {
-  Channels: {
-
-  }
-  Roles: {
-
-  }
+  [key: string]: any
 }
 
 export interface GuildConfig {
   Id: string,
   Name: string,
   MemberCount: string,
-  Config: any
+  Config: Config
 };
 
 const struct: GuildConfig = {
